@@ -10,12 +10,19 @@ const MainHeader = styled.header`
     background-color: #2a1510;
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: end; 
     padding: 20px; 
     position: sticky;
     top: 0;
     z-index: 100;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 `;
 
 const ImageLogo = styled.img`
@@ -33,7 +40,8 @@ const ImageIcon = styled.img`
     margin-right: 40px;
 
     @media (max-width: 480px) {
-        margin-right: 10px;
+        margin-top: 10%;
+        margin-right: 20px;
     }
 
     &:hover {
