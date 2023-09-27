@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
-import "../User/Login.css";
+import "../../index.css"
 
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 97.6vh;
 
   h2 {
     font-size: 30px;
@@ -58,7 +58,8 @@ const SubmitButton = styled.button`
 
 export default function Login() {
   return (
-    <>
+    <div className='Login-bg'>
+
       <Link to="/">Voltar para o Site</Link>
 
       <LoginContainer>
@@ -69,6 +70,6 @@ export default function Login() {
           <SubmitButton type="submit">Entrar</SubmitButton>
         </LoginForm>
       </LoginContainer>
-    </>
+    </div>
   );
 }
