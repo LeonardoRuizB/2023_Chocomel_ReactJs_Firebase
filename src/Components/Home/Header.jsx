@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 import imageLogo from "../../assets/logos/logo-chocomel.jpg";
 import LogoFacebook from "../../assets/icons/logo-facebook.png";
