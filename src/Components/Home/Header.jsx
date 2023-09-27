@@ -39,7 +39,7 @@ const ImageIcon = styled.img`
     &:hover {
         transform: scale(1.5);
         transition: transform 0.3s ease;
-      }
+    }
 `;
 
 export default function Header() {
