@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import "../../index.css"
+import "../../index.css";
+import ImageBack from "../../assets/icons/back-page.png";
 
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 97.6vh;
+  height: 90.7vh;
 
   h2 {
     font-size: 30px;
@@ -56,20 +56,45 @@ const SubmitButton = styled.button`
   } 
 `;
 
+const LinkBack = styled.a`
+    display: flex;
+
+    p {
+      color: black;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      background-color: #fff;
+      margin-top: 2%;
+      margin-left: 2%;
+      width: 150px;
+      border-radius: 10px;
+
+      @media (max-width: 480px) {
+        margin-top: 10%;
+        margin-left: 10%;
+      }
+    }
+`;
+
 export default function Login() {
   return (
-    <div className='Login-bg'>
+    <>
+      <div className='Login-bg'>
+      
+      <LinkBack href="../">
+        <p>Voltar para o site</p>
+      </LinkBack>
 
-      <Link to="/">Voltar para o Site</Link>
-
-      <LoginContainer>
-        <LoginForm>
-          <h2>LOGIN</h2>
-          <InputField type="email" required placeholder="Email" />
-          <InputField type="password" required placeholder="Senha" />
-          <SubmitButton type="submit">Entrar</SubmitButton>
-        </LoginForm>
-      </LoginContainer>
-    </div>
+        <LoginContainer>
+          <LoginForm>
+            <h2>LOGIN</h2>
+            <InputField type="email" required placeholder="Email" />
+            <InputField type="password" required placeholder="Senha" />
+            <SubmitButton type="submit">Entrar</SubmitButton>
+          </LoginForm>
+        </LoginContainer>
+      </div>
+    </>
   );
 }
