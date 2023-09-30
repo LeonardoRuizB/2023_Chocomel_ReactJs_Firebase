@@ -1,8 +1,9 @@
-import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import React, { useState } from 'react';
+import { useAuth } from '../../AuthContext';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import "../../index.css";
-import ImageBack from "../../assets/icons/back-page.png";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -77,24 +78,56 @@ const LinkBack = styled.a`
     }
 `;
 
-export default function Login() {
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const navigateTo = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const success = login(email, password);
+
+    if (success) {
+      navigateTo('/controlpanel');
+    } else {
+      alert('Email ou senha incorretos');
+    }
+  };
+
   return (
     <>
+      <title>Chocomel | Login</title>
+
       <div className='Login-bg'>
-      
-      <LinkBack href="../">
-        <p>Voltar para o site</p>
-      </LinkBack>
+
+        <LinkBack href="../">
+          <p>Voltar para o site</p>
+        </LinkBack>
 
         <LoginContainer>
-          <LoginForm>
+          <LoginForm onSubmit={handleLogin}>
             <h2>LOGIN</h2>
-            <InputField type="email" required placeholder="Email" />
-            <InputField type="password" required placeholder="Senha" />
+            <InputField
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required    
+            />
+            <InputField
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required    
+            />
             <SubmitButton type="submit">Entrar</SubmitButton>
           </LoginForm>
         </LoginContainer>
       </div>
     </>
   );
-}
+};
+
+export default Login;
