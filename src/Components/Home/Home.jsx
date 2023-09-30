@@ -7,6 +7,8 @@ import ButtonWhats from "./IconWhatsapp";
 export default function Home() {
     return (
         <>
+          <title>Chocomel</title>
+
             <Header />
             <ButtonWhats />
             <Section1 />
