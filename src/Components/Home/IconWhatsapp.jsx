@@ -12,12 +12,12 @@ const LinkWhats = styled.a`
         height: 100px;
     
         &:hover {
-        transform: scale(1.3);
-        transition: transform 0.3s ease;
+            transform: scale(1.3);
+            transition: transform 0.3s ease;
         }
     
         @media (max-width: 480px) {
-        bottom: 40px;
+            bottom: 40px;
         }
     }
 `;

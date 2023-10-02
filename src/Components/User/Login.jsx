@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import "../../index.css";
+import ImageLogo from "../../assets/logos/logo-chocomel.jpg";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -16,6 +17,12 @@ const LoginContainer = styled.div`
     font-size: 30px;
     padding: 10px;
   }
+`;
+
+const LogoChoco = styled.img`
+  width: 200px;
+  border-radius: 60px;
+  margin-bottom: 20px;
 `;
 
 const LoginForm = styled.form`
@@ -89,6 +96,7 @@ function Login() {
     const success = login(email, password);
 
     if (success) {
+      localStorage.setItem('authenticated', 'true');
       navigateTo('/controlpanel');
     } else {
       alert('Email ou senha incorretos');
@@ -106,6 +114,9 @@ function Login() {
         </LinkBack>
 
         <LoginContainer>
+
+          <LogoChoco src={ImageLogo} alt="Logo Chocomel" />
+
           <LoginForm onSubmit={handleLogin}>
             <h2>LOGIN</h2>
             <InputField
