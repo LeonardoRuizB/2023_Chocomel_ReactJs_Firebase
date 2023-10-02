@@ -5,6 +5,8 @@ import Home from "./Components/Home/Home";
 import Login from './Components/User/Login';
 import ControlPanel from './Components/Control Panel/ControlPanel';
 import { AuthProvider } from './AuthContext';
+import PrivateRoute from './PrivateRoute';
+import NotFound from './NotFound';
 
 function AppRouter() {
   return (
@@ -13,7 +15,11 @@ function AppRouter() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path="/ControlPanel" element={<ControlPanel />} />
+          <Route
+            path="/controlpanel"
+            element={<PrivateRoute component={ControlPanel} />}
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </Router>
