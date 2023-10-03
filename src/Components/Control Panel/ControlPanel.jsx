@@ -1,4 +1,5 @@
 import React from "react";
+import AddProductForm from "./AddProduct";
 
 export default function ControlPanel() {
 
@@ -11,12 +12,14 @@ export default function ControlPanel() {
         <>
             <title>Chocomel | Painel de Controle</title>
 
-            <p>leo deu certo!</p>
-
+            <AddProductForm />
+            
             <div>
                 <h2>Painel de Controle</h2>
                 <button onClick={handleLogout}>Sair</button>
             </div>
+
+
         </>
     );
 }
