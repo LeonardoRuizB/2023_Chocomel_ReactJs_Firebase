@@ -6,29 +6,10 @@ import styled from 'styled-components';
 
 import ImageWhats from "../../../assets/icons/logo-whatsapp-buttom.png";
 
-const getAllEasterProducts = async () => {
-    try {
-        const easterCollectionRef = collection(db, 'products');
-        const querySnapshot = await getDocs(easterCollectionRef);
-        const easterProducts = [];
-
-        querySnapshot.forEach((doc) => {
-            easterProducts.push({
-                id: doc.id,
-                ...doc.data(),
-            });
-        });
-
-        return easterProducts;
-    } catch (error) {
-        console.error('Erro ao buscar os produtos de Páscoa:', error);
-        return [];
-    }
-};
-
 const DivProd = styled.div`
     width: 270px;
     height: 28em;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
     background-color: #ab9680;
     border-radius: 20px;
     display: flex;
@@ -73,7 +54,7 @@ const TitleProd = styled.h3`
     font-family: 'Caveat', cursive;
 `;
 
-const DescriProd = styled.p`
+const SubtitleProd = styled.p`
     text-indent: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -120,24 +101,47 @@ const ButtonZap = styled.button`
     
 `;
 
-function AllProducts() {
-    const [easterProducts, setEasterProducts] = useState([]);
+const getWedding = async () => {
+    try {
+        const CollectionRef = collection(db, 'products');
+        const querySnapshot = await getDocs(CollectionRef);
+        const Products = [];
+
+        querySnapshot.forEach((doc) => {
+            const productData = doc.data();
+            if (productData.category === 'Casamento' || productData.category2 === 'Casamento') {
+                Products.push({
+                    id: doc.id,
+                    ...productData,
+                });
+            }
+        });
+
+        return Products;
+    } catch (error) {
+        console.error('Erro ao buscar os produtos:', error);
+        return [];
+    }
+};
+
+export default function AllWedding() {
+    const [Products, setProducts] = useState([]);
 
     useEffect(() => {
-        getAllEasterProducts().then((result) => {
-            setEasterProducts(result);
+        getWedding().then((result) => {
+            setProducts(result.slice(0, 5));
         });
     }, []);
 
     return (
         <>
-            <TitleCategory>Produtos de Casamento</TitleCategory>
+            <TitleCategory>Casamento</TitleCategory>
             <DivBody>
-                {easterProducts.map((product) => (
+                {Products.map((product) => (
                     <DivProd key={product.id}>
-                        <ImageProd src={product.imageUrl} alt={product.title} />
+                        <ImageProd src={product.imageUrls[0]} alt={product.title} />
                         <TitleProd>{product.title}</TitleProd>
-                        <DescriProd>{product.description}</DescriProd>
+                        <SubtitleProd>{product.subtitle}</SubtitleProd>
                         <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
                             <ButtonZap><img src={ImageWhats}/><p>Encomendar</p></ButtonZap>
                         </a>
@@ -147,5 +151,3 @@ function AllProducts() {
         </>
     );
 };
-
-export default AllProducts;
