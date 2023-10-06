@@ -25,7 +25,7 @@ export default function Footer() {
         <MainFooter>
             <p>Sobre nós</p>
             
-            <TextReserved>&copy; {new Date().getFullYear()} Todos os direitos reservados. 
+            <TextReserved>&copy; {new Date().getFullYear()} Chocomel | Todos os direitos reservados. 
             <br/> created by <a href="https://www.linkedin.com/in/leonardobottura/" target="_blank">Leonardo Bottura</a>.</TextReserved> 
         </MainFooter>
     );

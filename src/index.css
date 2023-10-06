@@ -9,5 +9,10 @@
   background-image: url('../src/assets/images/background.png');
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;  
+  background-attachment: fixed;
+}
+
+html {
+  max-width: 3000px;
+  margin: 0 auto;
 }

@@ -17,7 +17,7 @@ const LinkWhats = styled.a`
         }
     
         @media (max-width: 480px) {
-            bottom: 40px;
+            bottom: 10px;
         }
     }
 `;
