@@ -5,12 +5,10 @@ import { db } from '../../../Services/firebaseConfig';
 import styled from 'styled-components';
 
 import ImageWhats from "../../../assets/icons/logo-whatsapp-buttom.png";
-import AllBestSelling from './getBestSelling';
-import AllPromotion from './getPromotion';
 
 const DivProd = styled.div`
     width: 270px;
-    height: 28em;
+    height: 24em;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
     background-color: #ab9680;
     border-radius: 20px;
@@ -18,12 +16,14 @@ const DivProd = styled.div`
     flex-direction: column;
     justify-content: space-between; 
     align-items: center; 
+    color: #2a1510;
 
     @media (max-width: 480px) {
-        height: 30em;
+        
     }
 
     a {
+        color: #2a1510;
         text-decoration: none;
     }
 `;
@@ -51,12 +51,14 @@ const ImageProd = styled.img`
 `;
 
 const TitleProd = styled.h3`
+    margin-top: 1px;
     text-align: center;
     font-size: 35px;
     font-family: 'Caveat', cursive;
 `;
 
 const SubtitleProd = styled.p`
+    margin-top: 15px;
     text-indent: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -93,6 +95,8 @@ const ButtonZap = styled.button`
     }
 
     p {
+        color: #2a1510;
+        font-size: 14px;
         margin-left: 10px;
         font-weight: bold;
     }
@@ -103,57 +107,55 @@ const ButtonZap = styled.button`
     
 `;
 
-const getProducts = async () => {
-    try {
-        const CollectionRef = collection(db, 'products');
-        const querySnapshot = await getDocs(CollectionRef);
-        const Products = [];
+export default function GetProducts(categoryName, titleName) {
+    const getProductsBody = async () => {
+        try {
+            const CollectionRef = collection(db, 'products');
+            const querySnapshot = await getDocs(CollectionRef);
+            const Products = [];
 
-        querySnapshot.forEach((doc) => {
-            Products.push({
-                id: doc.id,
-                ...doc.data(),
+            querySnapshot.forEach((doc) => {
+                const productData = doc.data();
+                if (productData.category === `${categoryName}` || productData.category2 === `${categoryName}`) {
+                    Products.push({
+                        id: doc.id,
+                        ...productData,
+                    });
+                }
             });
-        });
 
-        return Products;
-    } catch (error) {
-        console.error('Erro ao buscar os produtos:', error);
-        return [];
-    }
-};
+            return Products;
+        } catch (error) {
+            console.error('Erro ao buscar os produtos:', error);
+            return [];
+        }
+    };
 
-function AllProducts() {
     const [Products, setProducts] = useState([]);
 
     useEffect(() => {
-        getProducts().then((result) => {
-            setProducts(result.slice(0, 25));
+        getProductsBody().then((result) => {
+            setProducts(result.slice(0, 5));
         });
     }, []);
 
     return (
         <>
-            <AllBestSelling />
-
-            <AllPromotion />
-            
-            <TitleCategory>Todos os Produtos</TitleCategory>
+            <TitleCategory>{titleName}</TitleCategory>
             <DivBody>
                 {Products.map((product) => (
                     <DivProd key={product.id}>
-                        <ImageProd src={product.imageUrls[0]} alt={product.title} />
-                        <TitleProd>{product.title}</TitleProd>
-                        <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        <a href={`produtos/${product.id}`}>
+                            <ImageProd src={product.imageUrls[0]} alt={product.title} />
+                            <TitleProd>{product.title}</TitleProd>
+                            <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        </a>
                         <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
-                            <ButtonZap><img src={ImageWhats}/><p>Encomendar</p></ButtonZap>
+                            <ButtonZap><img src={ImageWhats} /><p>Encomendar</p></ButtonZap>
                         </a>
                     </DivProd>
                 ))}
             </DivBody>
-
         </>
     );
 };
-
-export default AllProducts;

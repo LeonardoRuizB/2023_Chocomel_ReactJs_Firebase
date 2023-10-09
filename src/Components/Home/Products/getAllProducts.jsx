@@ -101,49 +101,52 @@ const ButtonZap = styled.button`
     
 `;
 
-const getWedding = async () => {
-    try {
-        const CollectionRef = collection(db, 'products');
-        const querySnapshot = await getDocs(CollectionRef);
-        const Products = [];
 
-        querySnapshot.forEach((doc) => {
-            const productData = doc.data();
-            if (productData.category === 'Casamento' || productData.category2 === 'Casamento') {
-                Products.push({
-                    id: doc.id,
-                    ...productData,
-                });
-            }
-        });
+export default function GetAllProducts(categoryName, titleName) {
+    const getProductsBody = async () => {
+        try {
+            const CollectionRef = collection(db, 'products');
+            const querySnapshot = await getDocs(CollectionRef);
+            const Products = [];
 
-        return Products;
-    } catch (error) {
-        console.error('Erro ao buscar os produtos:', error);
-        return [];
-    }
-};
+            querySnapshot.forEach((doc) => {
+                const productData = doc.data();
+                if (productData.category === `${categoryName}` || productData.category2 === `${categoryName}`) {
+                    Products.push({
+                        id: doc.id,
+                        ...productData,
+                    });
+                }
+            });
 
-export default function AllWedding() {
+            return Products;
+        } catch (error) {
+            console.error('Erro ao buscar os produtos:', error);
+            return [];
+        }
+    };
+
     const [Products, setProducts] = useState([]);
 
     useEffect(() => {
-        getWedding().then((result) => {
-            setProducts(result.slice(0, 5));
+        getProductsBody().then((result) => {
+            setProducts(result);
         });
     }, []);
 
     return (
         <>
-            <TitleCategory>Casamento</TitleCategory>
+            <TitleCategory>{titleName}</TitleCategory>
             <DivBody>
                 {Products.map((product) => (
                     <DivProd key={product.id}>
-                        <ImageProd src={product.imageUrls[0]} alt={product.title} />
-                        <TitleProd>{product.title}</TitleProd>
-                        <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        <a href={`produtos/${product.id}`}>
+                            <ImageProd src={product.imageUrls[0]} alt={product.title} />
+                            <TitleProd>{product.title}</TitleProd>
+                            <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        </a>
                         <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
-                            <ButtonZap><img src={ImageWhats}/><p>Encomendar</p></ButtonZap>
+                            <ButtonZap><img src={ImageWhats} /><p>Encomendar</p></ButtonZap>
                         </a>
                     </DivProd>
                 ))}

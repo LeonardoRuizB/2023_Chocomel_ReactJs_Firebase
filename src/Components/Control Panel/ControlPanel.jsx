@@ -2,7 +2,7 @@ import React from "react";
 import AddProductForm from "./AddProduct";
 import ImageUpload from "../Home/Carousel/ImageUpload";
 import ImageUploadMobile from "../Home/Carousel/ImageUploadMobile";
-import AllProductsController from "../Home/Products/getProductsController";
+import AllProductsController from "../Home/Products/ProductsController";
 
 export default function ControlPanel() {
 

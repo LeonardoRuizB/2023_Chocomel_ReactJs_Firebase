@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../../../Services/firebaseConfig';
 import styled from 'styled-components';
-
-import ImageWhats from "../../../assets/icons/logo-whatsapp-buttom.png";
+import { useLocation } from 'react-router-dom';
 
 const DivProd = styled.div`
     width: 270px;
-    height: 28em;
+    height: 22em;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
     background-color: #ab9680;
     border-radius: 20px;
@@ -16,11 +15,8 @@ const DivProd = styled.div`
     flex-direction: column;
     justify-content: space-between; 
     align-items: center; 
-
-    @media (max-width: 480px) {
-        height: 30em;
-    }
-
+    color: #2a1510;
+    
     a {
         text-decoration: none;
     }
@@ -74,7 +70,7 @@ const TitleCategory = styled.h2`
     }
 `;
 
-const ButtonZap = styled.button`
+const ButtonMore = styled.button`
     display: flex;
     width: 160px;
     align-items: center;
@@ -84,14 +80,11 @@ const ButtonZap = styled.button`
     background-color: #ab9680;
     border: 2px solid white; 
     cursor: pointer;
-    
-    img {
-        width: 25px;
-        margin-left: 12px;
-    }
+    justify-content: center; 
 
     p {
-        margin-left: 10px;
+        color: #2a1510;
+        font-size: 18px;
         font-weight: bold;
     }
 
@@ -101,49 +94,51 @@ const ButtonZap = styled.button`
     
 `;
 
-const getCakes = async () => {
-    try {
-        const CollectionRef = collection(db, 'products');
-        const querySnapshot = await getDocs(CollectionRef);
-        const Products = [];
 
-        querySnapshot.forEach((doc) => {
-            const productData = doc.data();
-            if (productData.category === 'Bolos' || productData.category2 === 'Bolos') {
-                Products.push({
-                    id: doc.id,
-                    ...productData,
-                });
-            }
-        });
+export default function ProductsAll() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get('search') || '';
+    const handleSearch = async () => {
+        try {
+            const CollectionRef = collection(db, 'products');
+            const querySnapshot = await getDocs(CollectionRef);
 
-        return Products;
-    } catch (error) {
-        console.error('Erro ao buscar os produtos:', error);
-        return [];
-    }
-};
+            const filteredProducts = [];
 
-export default function AllCakes() {
+            querySnapshot.forEach((doc) => {
+                const productData = doc.data();
+                if (productData.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    filteredProducts.push({
+                        id: doc.id,
+                        ...productData,
+                    });
+                }
+            });
+
+            setProducts(filteredProducts);
+        } catch (error) {
+            console.error('Erro ao buscar os produtos:', error);
+            setProducts([]);
+        }
+    };
+
     const [Products, setProducts] = useState([]);
-
     useEffect(() => {
-        getCakes().then((result) => {
-            setProducts(result.slice(0, 5));
-        });
-    }, []);
+        handleSearch();
+    }, [searchTerm]);
 
     return (
         <>
-            <TitleCategory>Bolos</TitleCategory>
+            <TitleCategory>Todos os Produtos</TitleCategory>
             <DivBody>
                 {Products.map((product) => (
                     <DivProd key={product.id}>
                         <ImageProd src={product.imageUrls[0]} alt={product.title} />
                         <TitleProd>{product.title}</TitleProd>
                         <SubtitleProd>{product.subtitle}</SubtitleProd>
-                        <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
-                            <ButtonZap><img src={ImageWhats}/><p>Encomendar</p></ButtonZap>
+                        <a href={`${product.id}`}>
+                            <ButtonMore><p>VER MAIS</p></ButtonMore>
                         </a>
                     </DivProd>
                 ))}

@@ -5,10 +5,15 @@ import { db } from '../../../Services/firebaseConfig';
 import styled from 'styled-components';
 
 import ImageWhats from "../../../assets/icons/logo-whatsapp-buttom.png";
+import GetProducts from './getProducts';
+
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Estilos do carrossel
+import { Carousel } from "react-responsive-carousel";
+
 
 const DivProd = styled.div`
     width: 270px;
-    height: 28em;
+    height: 24em;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
     background-color: #ab9680;
     border-radius: 20px;
@@ -16,12 +21,13 @@ const DivProd = styled.div`
     flex-direction: column;
     justify-content: space-between; 
     align-items: center; 
+    color: #2a1510;
 
     @media (max-width: 480px) {
-        height: 30em;
     }
 
     a {
+        color: #2a1510;
         text-decoration: none;
     }
 `;
@@ -32,9 +38,11 @@ const DivBody = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
+    margin-bottom: 5%;
 
     @media (max-width: 480px) {
         margin-top: 8%;
+        margin-bottom: 10%;
         margin-left: 15%;
         margin-right: 15%;
     }
@@ -49,12 +57,14 @@ const ImageProd = styled.img`
 `;
 
 const TitleProd = styled.h3`
+    margin-top: 1px;
     text-align: center;
     font-size: 35px;
     font-family: 'Caveat', cursive;
 `;
 
 const SubtitleProd = styled.p`
+    margin-top: 15px;
     text-indent: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -84,64 +94,69 @@ const ButtonZap = styled.button`
     background-color: #ab9680;
     border: 2px solid white; 
     cursor: pointer;
-    
+
     img {
         width: 25px;
         margin-left: 12px;
     }
 
     p {
+        color: #2a1510;
+        font-size: 14px;
         margin-left: 10px;
         font-weight: bold;
     }
 
     &:hover {
         background-color: #7a6a54;
-    }  
-
+    }
+    
 `;
 
-const getPromotion = async () => {
-    try {
-        const CollectionRef = collection(db, 'products');
-        const querySnapshot = await getDocs(CollectionRef);
-        const Products = [];
+export default function ProductsHome() {
+    const getProducts = async () => {
+        try {
+            const CollectionRef = collection(db, 'products');
+            const querySnapshot = await getDocs(CollectionRef);
+            const Products = [];
 
-        querySnapshot.forEach((doc) => {
-            const productData = doc.data();
-            if (productData.category === 'Promocoes' || productData.category2 === 'Promocoes') {
+            querySnapshot.forEach((doc) => {
                 Products.push({
                     id: doc.id,
-                    ...productData,
+                    ...doc.data(),
                 });
-            }
-        });
+            });
 
-        return Products;
-    } catch (error) {
-        console.error('Erro ao buscar os produtos:', error);
-        return [];
-    }
-};
+            return Products;
+        } catch (error) {
+            console.error('Erro ao buscar os produtos:', error);
+            return [];
+        }
+    };
 
-export default function AllPromotion() {
     const [Products, setProducts] = useState([]);
 
     useEffect(() => {
-        getPromotion().then((result) => {
-            setProducts(result.slice(0, 5));
+        getProducts().then((result) => {
+            setProducts(result.slice(0, 25));
         });
     }, []);
 
     return (
         <>
-            <TitleCategory>Promoções</TitleCategory>
+            {GetProducts("Mais Vendidos", "Mais Vendidos")}
+
+            {GetProducts("Promocoes", "Promoções")}
+
+            <TitleCategory>Todos os Produtos</TitleCategory>
             <DivBody>
                 {Products.map((product) => (
                     <DivProd key={product.id}>
-                        <ImageProd src={product.imageUrls[0]} alt={product.title} />
-                        <TitleProd>{product.title}</TitleProd>
-                        <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        <a href={`produtos/${product.id}`}>
+                            <ImageProd src={product.imageUrls[0]} alt={product.title} />
+                            <TitleProd>{product.title}</TitleProd>
+                            <SubtitleProd>{product.subtitle}</SubtitleProd>
+                        </a>
                         <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
                             <ButtonZap><img src={ImageWhats} /><p>Encomendar</p></ButtonZap>
                         </a>
