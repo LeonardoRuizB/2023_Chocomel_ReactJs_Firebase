@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import WhatsImage from '../../assets/icons/logo-whatsapp.png';
+
 const LinkWhats = styled.a`
     img {
         text-decoration: none;
@@ -26,7 +28,7 @@ export default function ButtonWhats() {
     return (
         <>
             <LinkWhats href="https://wa.me/5511945455177" target="_blank">
-                <img src="src/assets/icons/logo-whatsapp.png" alt="Logo WhatsApp" />
+                <img src={WhatsImage} alt="Logo WhatsApp" />
             </LinkWhats>
         </>
     );

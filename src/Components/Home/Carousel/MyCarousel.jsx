@@ -5,13 +5,12 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useMediaQuery } from 'react-responsive';
 
 function ImageCarousel() {
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define o limite de largura para dispositivos móveis
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [carouselImages, setCarouselImages] = useState([]);
   const storagePath = isMobile ? 'carouselImagesMobile' : 'carouselImages';
 
   useEffect(() => {
-    // Função assíncrona para buscar imagens do Firebase Storage
     const fetchImages = async () => {
       const storage = getStorage();
       const storageRef = ref(storage, storagePath);
@@ -29,7 +28,7 @@ function ImageCarousel() {
     };
 
     fetchImages();
-  }, [storagePath]); // Reage a mudanças em storagePath
+  }, [storagePath]); 
 
   return (
     <div>
