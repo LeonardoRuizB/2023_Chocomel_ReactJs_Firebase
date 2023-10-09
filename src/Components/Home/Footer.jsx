@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const MainFooter = styled.footer`
     background-color: #2a1510;
+    margin-top: 5%;
 `;
 
 const TextReserved = styled.p`
