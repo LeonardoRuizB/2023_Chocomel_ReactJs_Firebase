@@ -7,6 +7,8 @@ import ControlPanel from './Components/Control Panel/ControlPanel';
 import { AuthProvider } from './AuthContext';
 import PrivateRoute from './PrivateRoute';
 import NotFound from './NotFound';
+import AllProductsPage from './Components/Home/Products/AllProductsPage';
+import ProductDetails from './Components/Home/Products/ProductDetails';
 
 function AppRouter() {
   return (
@@ -16,10 +18,12 @@ function AppRouter() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route
-            path="/controlpanel"
+            path='/controlpanel'
             element={<PrivateRoute component={ControlPanel} />}
           />
-          <Route path="*" element={<NotFound />} />
+          <Route path='*' element={<NotFound />} />
+          <Route path='/produtos' element={<AllProductsPage />} />
+          <Route path='/produtos/:id' element={<ProductDetails />} />
         </Routes>
       </AuthProvider>
     </Router>
