@@ -62,7 +62,7 @@ const SubtitleProd = styled.p`
 const TitleCategory = styled.h2`
     margin-top: 2%;
     text-align: center;
-    font-family: 'Caveat', cursive;
+    line-height: 1.6;
     font-size: 45px;
 
     @media (max-width: 480px) {
@@ -90,58 +90,95 @@ const ButtonMore = styled.button`
 
     &:hover {
         background-color: #7a6a54;
-    }
-    
+    }  
 `;
 
+const ButtonNotFound = styled.button`
+    font-size: 25px;
+    width: 80%;
+    text-align: center;
+    border-radius: 20px;
+    padding: 15px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-top: 50px;
+    margin-bottom: 10%;
+    background-color: #ab9680;
+    border: 2px solid white; 
+    cursor: pointer;
+
+    &:hover {
+        background-color: #7a6a54;
+    }
+`;
 
 export default function ProductsAll() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
+
     const searchTerm = searchParams.get('search') || '';
+    const categoryParam = searchParams.get('category') || '';
+
     const handleSearch = async () => {
         try {
             const CollectionRef = collection(db, 'products');
             const querySnapshot = await getDocs(CollectionRef);
-
+    
             const filteredProducts = [];
-
+    
             querySnapshot.forEach((doc) => {
                 const productData = doc.data();
-                if (productData.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                if (
+                    (productData.title.toLowerCase().includes(searchTerm.toLowerCase()) || searchTerm === '') &&
+                    (categoryParam === '' || productData.category.toLowerCase() === categoryParam.toLowerCase() || productData.category2.toLowerCase() === categoryParam.toLowerCase()) 
+                ) {
                     filteredProducts.push({
                         id: doc.id,
                         ...productData,
                     });
                 }
             });
-
+    
             setProducts(filteredProducts);
         } catch (error) {
             console.error('Erro ao buscar os produtos:', error);
             setProducts([]);
         }
     };
-
+  
     const [Products, setProducts] = useState([]);
+    const [searchedProduct, setSearchedProduct] = useState('');
+
     useEffect(() => {
+        setSearchedProduct(searchTerm);
         handleSearch();
     }, [searchTerm]);
 
     return (
         <>
-            <TitleCategory>Todos os Produtos</TitleCategory>
             <DivBody>
-                {Products.map((product) => (
-                    <DivProd key={product.id}>
-                        <ImageProd src={product.imageUrls[0]} alt={product.title} />
-                        <TitleProd>{product.title}</TitleProd>
-                        <SubtitleProd>{product.subtitle}</SubtitleProd>
-                        <a href={`${product.id}`}>
-                            <ButtonMore><p>VER MAIS</p></ButtonMore>
-                        </a>
-                    </DivProd>
-                ))}
+                {Products.length === 0 ? (
+                    <>
+                        <TitleCategory>
+                            Produto {searchedProduct ? `"${searchedProduct}"` : ''} não encontrado. <br/>
+                            Caso não encontre o produto que está procurando <br/>
+                            <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, não encontrei o produto "${searchedProduct}" você tem?`} target="_blank">
+                                <ButtonNotFound>Clique aqui e fale diretamente comigo pelo WhatsApp</ButtonNotFound>
+                            </a>
+                        </TitleCategory>                     
+                    </>
+                ) : (
+                    Products.map((product) => (
+                        <DivProd key={product.id}>
+                            <ImageProd src={product.imageUrls[0]} alt={product.title} />
+                            <TitleProd>{product.title}</TitleProd>
+                            <SubtitleProd>{product.subtitle}</SubtitleProd>
+                            <a href={`${product.id}`}>
+                                <ButtonMore><p>VER MAIS</p></ButtonMore>
+                            </a>
+                        </DivProd>
+                    ))
+                )}
             </DivBody>
         </>
     );

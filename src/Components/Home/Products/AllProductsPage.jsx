@@ -28,7 +28,7 @@ export default function AllProductsPage() {
             
             <Header />
 
-            <a href='./'>
+            <a href='../'>
                 <BackButton>Voltar</BackButton>
             </a>
 
