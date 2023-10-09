@@ -16,3 +16,22 @@ html {
   max-width: 3000px;
   margin: 0 auto;
 }
+
+::-webkit-scrollbar {
+  width: 12px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ab9680; 
+  border-radius: 5px; 
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2a1510; 
+  margin-top: 5%; 
+  margin-bottom: 5%; 
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
