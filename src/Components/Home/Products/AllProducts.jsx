@@ -77,7 +77,6 @@ const ButtonMore = styled.button`
     border-radius: 20px;
     padding: 5px;
     margin-bottom: 10px;
-    background-color: #ab9680;
     border: 2px solid white; 
     cursor: pointer;
     justify-content: center; 
@@ -162,7 +161,7 @@ export default function ProductsAll() {
                         <TitleCategory>
                             Produto {searchedProduct ? `"${searchedProduct}"` : ''} não encontrado. <br/>
                             Caso não encontre o produto que está procurando <br/>
-                            <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, não encontrei o produto "${searchedProduct}" você tem?`} target="_blank">
+                            <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, não encontrei o produto ${searchedProduct} você tem?`} target="_blank">
                                 <ButtonNotFound>Clique aqui e fale diretamente comigo pelo WhatsApp</ButtonNotFound>
                             </a>
                         </TitleCategory>                     
@@ -173,7 +172,7 @@ export default function ProductsAll() {
                             <ImageProd src={product.imageUrls[0]} alt={product.title} />
                             <TitleProd>{product.title}</TitleProd>
                             <SubtitleProd>{product.subtitle}</SubtitleProd>
-                            <a href={`${product.id}`}>
+                            <a href={`produtos/${product.id}`}>
                                 <ButtonMore><p>VER MAIS</p></ButtonMore>
                             </a>
                         </DivProd>

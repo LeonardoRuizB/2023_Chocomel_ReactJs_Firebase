@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { getDocs, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../Services/firebaseConfig';
 import styled from 'styled-components';
-
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+
+import EditImage from "../../../assets/icons/edit-chocolate.png";
 
 const DivProd = styled.div`
     width: 270px;
@@ -67,7 +68,7 @@ const TitleCategory = styled.h2`
 
 const ButtonMore = styled.button`
     width: 100px;
-    background-color: #ab9680;
+    background-color: white;
     margin-top: 8px;
     padding: 8px;
     border: 2px solid white; 
@@ -80,6 +81,26 @@ const ButtonMore = styled.button`
 
     &:hover {
         background-color: #7a6a54;
+    }
+`;
+
+const DivTitle = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: center;
+
+    input {
+        margin: 40px 0 0 30px;
+        width: 200px;
+        height: 40px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid black;
+
+        @media (max-width: 480px) {
+            margin: 10px 0 0 0;
+        }
     }
 `;
 
@@ -106,6 +127,7 @@ const getProductsController = async () => {
 export default function AllProductsController() {
     const [Products, setProducts] = useState([]);
     const [editProduct, setEditProduct] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         getProductsController().then((result) => {
@@ -141,12 +163,33 @@ export default function AllProductsController() {
         }
     };
 
+    const filteredProducts = Products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <>
-            <TitleCategory>Todos os Produtos</TitleCategory>
+            {editProduct && (
+                <EditForm
+                    product={editProduct}
+                    onUpdate={(updatedData) => handleUpdate(editProduct.id, updatedData)}
+                    onCancel={() => setEditProduct(null)}
+                />
+            )}
+
+            <DivTitle>
+                <TitleCategory>Todos os Produtos</TitleCategory>
+
+                <input
+                    type="text"
+                    placeholder="Buscar Produto"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </DivTitle>
+
             <DivBody>
-                {Products.map((product) => (
+                {filteredProducts.map((product) => (
                     <DivProd key={product.id}>
                         <ImageProd src={product.imageUrls[0]} alt={product.title} />
                         <TitleProd>{product.title}</TitleProd>
@@ -158,18 +201,143 @@ export default function AllProductsController() {
                 ))}
             </DivBody>
 
-            {editProduct && (
-                <EditForm
-                    product={editProduct}
-                    onUpdate={(updatedData) => handleUpdate(editProduct.id, updatedData)}
-                    onCancel={() => setEditProduct(null)}
-                />
-            )}
         </>
     );
 };
 
-const FormEdit = styled.form`
+const DivForm = styled.div`
+  text-align: center;
+  background-color: #ab9680;
+  margin: 5% 30% 50px 30%;
+  border-radius: 20px;
+  height: 51em;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
+
+  @media (max-width: 480px) {
+    margin: 20% 2% 0 2%;
+    padding-bottom: 20px;
+    height: 49em;
+  }
+
+  h2 {
+    font-size: 35px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    @media (max-width: 480px) {
+      font-size: 30px;
+    }
+
+    img {
+      width: 40px;
+
+      @media (max-width: 480px) {
+        margin-left: 5px;
+      }
+    }
+  }
+`;
+
+const LabelTitle = styled.label`
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  
+  input {
+    font-size: 17px;
+    padding: 5px;
+    border: 2px solid white;
+    width: 90%;
+    margin-left: 10px;
+    height: 30px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+`;
+
+const LabelArea = styled.label`
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+
+  textarea {
+    padding: 5px;
+    font-size: 17px;
+    border: 2px solid white;
+    width: 90%;
+    height: 55px;
+    margin-left: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    resize: none;
+  }
+`;
+
+const LabelAreaDescription = styled.label`
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+
+  textarea {
+    font-size: 17px;
+    padding: 5px;
+    border: 2px solid white;
+    width: 90%;
+    height: 75px;
+    margin-left: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    resize: none;
+  }
+`;
+
+const DivImages = styled.div`
+  input {
+    font-size: 17px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    @media (max-width: 480px) {
+      font-size: 13px;
+    }
+  }  
+`;
+
+const LabelCategory = styled.label`
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+
+    select {
+    font-size: 15px;
+    padding: 5px;
+    margin: 0 0 0px 10px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
+    }
+`;
+
+const ButtonEdit = styled.button`
+    margin: 20px 20px 0 20px;
+    font-size: 25px;
+    width: 150px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
+
+    @media (max-width: 480px) {
+        margin: 20px 0 0 10px;
+    }
+
+    &:hover {
+    background-color: #7a6a54;
+    }
+`;
+
+const DivCategory = styled.div`
     display: flex;
     flex-direction: column;
 `;
@@ -212,86 +380,88 @@ function EditForm({ product, onUpdate, onCancel }) {
     };
 
     return (
-        <div>
-            <h2>Editar Produto</h2>
-            <FormEdit onSubmit={handleSubmit}>
-                <label>
+        <DivForm>
+            <h2>Editando o produto <img src={EditImage} alt="Edit Image" /><br />"{formData.title}"</h2>
+            <form onSubmit={handleSubmit}>
+                <LabelTitle>
                     Título:
                     <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
-                </label>
-                <label>
+                </LabelTitle>
+                <LabelArea>
                     Subtítulo:
                     <textarea type="text" name="subtitle" value={formData.subtitle} onChange={handleInputChange} />
-                </label>
-                <label>
+                </LabelArea>
+                <LabelAreaDescription>
                     Descrição:
                     <textarea type="text" name="description" value={formData.description} onChange={handleInputChange} />
-                </label>
-                <label>
+                </LabelAreaDescription>
+                <DivImages>
                     Imagem 1:
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleImageChange(e, 0)}
                     />
-                </label>
-                <label>
+                </DivImages>
+                <DivImages>
                     Imagem 2:
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleImageChange(e, 1)}
                     />
-                </label>
-                <label>
+                </DivImages>
+                <DivImages>
                     Imagem 3:
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleImageChange(e, 2)}
                     />
-                </label>
-                <label>
+                </DivImages>
+                <DivImages>
                     Imagem 4:
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleImageChange(e, 3)}
                     />
-                </label>
-                <label>
-                    Categoria:
-                    <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Selecione a categoria</option>
-                        <option value="Casamento">Casamento</option>
-                        <option value="Bolos">Bolos</option>
-                        <option value="Doces">Doces</option>
-                        <option value="Promocoes">Promoções</option>
-                        <option value="Mais Vendidos">Mais Vendidos</option>
-                    </select>
-                </label>
-                <label>
-                    Categoria 2:
-                    <select
-                        name="category2"
-                        value={formData.category2}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Selecione a categoria</option>
-                        <option value="Casamento">Casamento</option>
-                        <option value="Bolos">Bolos</option>
-                        <option value="Doces">Doces</option>
-                        <option value="Promocoes">Promoções</option>
-                        <option value="Mais Vendidos">Mais Vendidos</option>
-                    </select>
-                </label>
-                <button type="submit">Salvar</button>
-                <button type="button" onClick={onCancel}>Cancelar</button>
-            </FormEdit>
-        </div>
+                </DivImages>
+                <DivCategory>
+                    <LabelCategory>
+                        Categoria:
+                        <select
+                            name="category"
+                            value={formData.category}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Selecione a categoria</option>
+                            <option value="Casamento">Casamento</option>
+                            <option value="Bolos">Bolos</option>
+                            <option value="Doces">Doces</option>
+                            <option value="Promocoes">Promoções</option>
+                            <option value="Mais Vendidos">Mais Vendidos</option>
+                        </select>
+                    </LabelCategory>
+                    <LabelCategory>
+                        Categoria 2:
+                        <select
+                            name="category2"
+                            value={formData.category2}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Selecione a categoria</option>
+                            <option value="Casamento">Casamento</option>
+                            <option value="Bolos">Bolos</option>
+                            <option value="Doces">Doces</option>
+                            <option value="Promocoes">Promoções</option>
+                            <option value="Mais Vendidos">Mais Vendidos</option>
+                        </select>
+                    </LabelCategory>
+                </DivCategory>
+                <ButtonEdit type="submit">Salvar</ButtonEdit>
+                <ButtonEdit type="button" onClick={onCancel}>Cancelar</ButtonEdit>
+            </form>
+        </DivForm>
     );
 }

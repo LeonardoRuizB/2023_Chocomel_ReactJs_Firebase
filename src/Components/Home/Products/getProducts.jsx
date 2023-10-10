@@ -80,24 +80,23 @@ const TitleCategory = styled.h2`
 
 const ButtonZap = styled.button`
     display: flex;
-    width: 160px;
+    width: 170px;
     align-items: center;
     border-radius: 20px;
-    padding: 5px;
     margin-bottom: 10px;
-    background-color: #ab9680;
     border: 2px solid white; 
     cursor: pointer;
 
     img {
-        width: 25px;
+        padding: 0;
+        width: 30px;
         margin-left: 12px;
     }
 
     p {
+        padding: 5px;
         color: #2a1510;
         font-size: 14px;
-        margin-left: 10px;
         font-weight: bold;
     }
 
@@ -151,7 +150,7 @@ export default function GetProducts(categoryName, titleName) {
                             <SubtitleProd>{product.subtitle}</SubtitleProd>
                         </a>
                         <a href={`https://api.whatsapp.com/send?phone=5511945455177&text=Olá, gostaria de encomendar o produto ${product.title}!`} target="_blank">
-                            <ButtonZap><img src={ImageWhats} /><p>Encomendar</p></ButtonZap>
+                            <ButtonZap><img src={ImageWhats} /><p>ENCOMENDAR</p></ButtonZap>
                         </a>
                     </DivProd>
                 ))}

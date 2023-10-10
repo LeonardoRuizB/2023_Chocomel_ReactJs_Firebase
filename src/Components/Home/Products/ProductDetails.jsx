@@ -196,7 +196,7 @@ export default function ProductDetails() {
         <>
             <Header />
 
-            <a href='./'>
+            <a href='/produtos'>
                 <BackButton>Voltar</BackButton>
             </a>
 
