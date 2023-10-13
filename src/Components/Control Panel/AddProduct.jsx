@@ -15,7 +15,7 @@ const DivForm = styled.div`
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
 
   @media (max-width: 480px) {
-    margin: 20% 2% 0 2%;
+    margin: 10% 2% 0 2%;
     padding-bottom: 20px;
   }
 
@@ -129,7 +129,7 @@ const ButtonCreate = styled.button`
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
 
   &:hover {
-    background-color: #7a6a54;
+    background-color: #c0c0c0;
   }
 `;
 
@@ -267,11 +267,11 @@ export default function AddProductForm() {
             onChange={handleChange}
           >
             <option value="">Selecione a categoria</option>
-            <option value="Casamento">Casamento</option>
             <option value="Bolos">Bolos</option>
+            <option value="Casamento">Casamento</option>
             <option value="Doces">Doces</option>
-            <option value="Promocoes">Promoções</option>
             <option value="Mais Vendidos">Mais Vendidos</option>
+            <option value="Promocoes">Promoções</option>
           </select>
         </LabelCategory>
         <br />
@@ -283,11 +283,11 @@ export default function AddProductForm() {
             onChange={handleChange}
           >
             <option value="">Selecione a categoria</option>
-            <option value="Casamento">Casamento</option>
             <option value="Bolos">Bolos</option>
+            <option value="Casamento">Casamento</option>
             <option value="Doces">Doces</option>
-            <option value="Promocoes">Promoções</option>
             <option value="Mais Vendidos">Mais Vendidos</option>
+            <option value="Promocoes">Promoções</option>
           </select>
         </LabelCategory>
         <br />

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useMediaQuery } from 'react-responsive';
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-function ImageCarousel() {
+export default function ImageCarousel() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [carouselImages, setCarouselImages] = useState([]);
@@ -28,11 +28,11 @@ function ImageCarousel() {
     };
 
     fetchImages();
-  }, [storagePath]); 
+  }, [storagePath]);
 
   return (
     <div>
-      <Carousel>
+      <Carousel showThumbs={false}>
         {carouselImages.map((imageUrl, index) => (
           <div key={index}>
             <img src={imageUrl} alt={`Imagem ${index}`} />
@@ -42,5 +42,3 @@ function ImageCarousel() {
     </div>
   );
 }
-
-export default ImageCarousel;

@@ -45,7 +45,7 @@ const DivInput = styled.div`
     cursor: pointer;
 
     &:hover {
-      background-color: #7a6a54;
+      background-color: #c0c0c0;
     }  
 
     @media (max-width: 480px) {

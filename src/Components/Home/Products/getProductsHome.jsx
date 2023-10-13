@@ -7,10 +7,6 @@ import styled from 'styled-components';
 import ImageWhats from "../../../assets/icons/logo-whatsapp-buttom.png";
 import GetProducts from './getProducts';
 
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Estilos do carrossel
-import { Carousel } from "react-responsive-carousel";
-
-
 const DivProd = styled.div`
     width: 270px;
     height: 24em;
@@ -24,6 +20,8 @@ const DivProd = styled.div`
     color: #2a1510;
 
     @media (max-width: 480px) {
+        width: 160px;
+        height: 24em;
     }
 
     a {
@@ -41,10 +39,8 @@ const DivBody = styled.div`
     margin-bottom: 5%;
 
     @media (max-width: 480px) {
-        margin-top: 8%;
-        margin-bottom: 10%;
-        margin-left: 15%;
-        margin-right: 15%;
+        margin: 0 20px 20px 20px;
+        gap: 25px;
     }
 `;
 
@@ -61,6 +57,10 @@ const TitleProd = styled.h3`
     text-align: center;
     font-size: 35px;
     font-family: 'Caveat', cursive;
+
+    @media (max-width: 480px) {
+        font-size: 25px;
+    }
 `;
 
 const SubtitleProd = styled.p`
@@ -71,6 +71,11 @@ const SubtitleProd = styled.p`
     text-align: justify;
     font-size: 19px;
     line-height: 1.3;
+
+    @media (max-width: 480px) {
+        margin-top: 8px;
+        font-size: 15px;
+    }
 `;
 
 const TitleCategory = styled.h2`
@@ -81,6 +86,7 @@ const TitleCategory = styled.h2`
 
     @media (max-width: 480px) {
         margin-top: 10%;
+        margin-bottom: 10%;
     }
 `;
 
@@ -107,9 +113,21 @@ const ButtonZap = styled.button`
     }
 
     &:hover {
-        background-color: #7a6a54;
+        background-color: #c0c0c0;
     }
-    
+
+    @media (max-width: 480px) {
+        width: 140px;
+        margin-bottom: 9px;
+
+        img {
+            width: 20px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }    
 `;
 
 export default function ProductsHome() {
@@ -147,7 +165,7 @@ export default function ProductsHome() {
 
             {GetProducts("Promocoes", "Promoções")}
 
-            <TitleCategory>Todos os Produtos</TitleCategory>
+            <TitleCategory>Produtos</TitleCategory>
             <DivBody>
                 {Products.map((product) => (
                     <DivProd key={product.id}>

@@ -3,14 +3,12 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import imageLogo from "../../assets/logos/logo-chocomel.jpg";
-import LogoFacebook from "../../assets/icons/logo-facebook.png";
-import LogoInstagram from "../../assets/icons/logo-instagram.png";
-import LogoEmail from "../../assets/icons/logo-email.png";
 import SearchIcon from "../../assets/icons/icon_search.png";
+import IconOpen from "../../assets/icons/icon-open-category.png";
+import IconClosed from "../../assets/icons/icon-closed-category.png";
 
 const MainHeader = styled.header`
     background-color: #2a1510;
-    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -21,6 +19,7 @@ const MainHeader = styled.header`
     z-index: 100;
 
     @media (max-width: 480px) {
+        padding: 20px 0 0 0; 
         flex-direction: column;
         align-items: center;
         text-align: center;
@@ -34,21 +33,6 @@ const ImageLogo = styled.img`
     
     @media (max-width: 480px) {
         margin-left: 0px;
-    }
-`;
-
-const ImageIcon = styled.img`
-    width: 50px;
-    margin-right: 40px;
-
-    @media (max-width: 480px) {
-        margin-top: 10%;
-        margin-right: 20px;
-    }
-
-    &:hover {
-        transform: scale(1.5);
-        transition: transform 0.3s ease;
     }
 `;
 
@@ -94,14 +78,38 @@ const DivSearch = styled.div`
     align-items: center;    
 `;
 
-export default function Header() {
+const ButtonCategory = styled.button`
+    background-color: #2a1510;
+    border-radius: 10px;
+    border: 2px solid #2a1510;
+    margin: 0 100px 0 90px;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        transition: transform 0.3s ease;
+
+        @media (max-width: 480px) {
+            transform: scale(1.0);
+        }
+    }
+
+    @media (max-width: 480px) {
+        margin: 0;
+    }
+
+    img {
+        width: 50px;
+    }
+`;
+
+export default function Header({ onToggleCategory, isCategoryVisible }) {
     const [searchTerm, setSearchTerm] = useState('');
     const navigateTo = useNavigate();
 
     const handleSearch = () => {
         navigateTo(`/produtos?search=${encodeURIComponent(searchTerm)}`);
     };
-
 
     return (
         <MainHeader>
@@ -121,17 +129,9 @@ export default function Header() {
                 <SearchButton onClick={handleSearch}><img src={SearchIcon} alt="Icone de busca" /></SearchButton>
             </DivSearch>
 
-            <div>
-                <a href="https://www.facebook.com/profile.php?id=100086276622209" target="_blank">
-                    <ImageIcon src={LogoFacebook} alt="Logo Facebook" />
-                </a>
-                <a href="https://www.instagram.com/chocomelsp/" target="_blank">
-                    <ImageIcon src={LogoInstagram} alt="Logo Instagram" />
-                </a>
-                <a href="mailto:contato.cdconfeitaria@gmail.com" target="_blank">
-                    <ImageIcon src={LogoEmail} alt="Logo Email" />
-                </a>
-            </div>
+            <ButtonCategory onClick={onToggleCategory}>
+                {isCategoryVisible ? <img src={IconOpen}/> : <img src={IconClosed}/>}
+            </ButtonCategory>
         </MainHeader>
     );
 }

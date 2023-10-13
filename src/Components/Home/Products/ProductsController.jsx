@@ -68,7 +68,6 @@ const TitleCategory = styled.h2`
 
 const ButtonMore = styled.button`
     width: 100px;
-    background-color: white;
     margin-top: 8px;
     padding: 8px;
     border: 2px solid white; 
@@ -80,7 +79,7 @@ const ButtonMore = styled.button`
     margin-bottom: 10px;
 
     &:hover {
-        background-color: #7a6a54;
+        background-color: #c0c0c0;
     }
 `;
 
@@ -436,11 +435,11 @@ function EditForm({ product, onUpdate, onCancel }) {
                             onChange={handleInputChange}
                         >
                             <option value="">Selecione a categoria</option>
-                            <option value="Casamento">Casamento</option>
                             <option value="Bolos">Bolos</option>
+                            <option value="Casamento">Casamento</option>
                             <option value="Doces">Doces</option>
-                            <option value="Promocoes">Promoções</option>
                             <option value="Mais Vendidos">Mais Vendidos</option>
+                            <option value="Promocoes">Promoções</option>
                         </select>
                     </LabelCategory>
                     <LabelCategory>
@@ -451,11 +450,11 @@ function EditForm({ product, onUpdate, onCancel }) {
                             onChange={handleInputChange}
                         >
                             <option value="">Selecione a categoria</option>
-                            <option value="Casamento">Casamento</option>
                             <option value="Bolos">Bolos</option>
+                            <option value="Casamento">Casamento</option>
                             <option value="Doces">Doces</option>
-                            <option value="Promocoes">Promoções</option>
                             <option value="Mais Vendidos">Mais Vendidos</option>
+                            <option value="Promocoes">Promoções</option>
                         </select>
                     </LabelCategory>
                 </DivCategory>

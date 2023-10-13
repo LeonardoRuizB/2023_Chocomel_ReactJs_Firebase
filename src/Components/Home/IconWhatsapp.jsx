@@ -20,6 +20,7 @@ const LinkWhats = styled.a`
     
         @media (max-width: 480px) {
             bottom: 10px;
+            right: 0px;
         }
     }
 `;
