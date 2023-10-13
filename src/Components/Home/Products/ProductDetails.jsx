@@ -10,6 +10,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Header from '../Header';
 import Footer from '../Footer';
 import ButtonWhats from '../IconWhatsapp';
+import Category from '../Category';
 
 const ImageDetail = styled.img`
     object-fit: cover;
@@ -52,7 +53,7 @@ const DivBody = styled.div`
     flex-direction: column;
     justify-content: space-between; 
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); 
-    width: 600px;
+    width: 755px;
     padding: 20px;
     margin-left: 40px;
     background-color: #f5f5f5;
@@ -123,7 +124,6 @@ const ButtonZap = styled.a`
         align-items: center;
         width: 200px;
         padding: 5px;
-        background-color: #ab9680;
         border: 2px solid white; 
         cursor: pointer;
         border-radius: 20px;
@@ -131,7 +131,7 @@ const ButtonZap = styled.a`
 
         
         &:hover {
-            background-color: #7a6a54;
+            background-color: #c0c0c0;
         }
     }
 
@@ -157,6 +157,10 @@ const BackButton = styled.button`
     cursor: pointer;
     font-weight: bold;
 
+    @media (max-width: 480px) {
+        margin-top: 10%;
+    }
+
     &:hover {
         background-color: #7a6a54;
     }
@@ -165,6 +169,12 @@ const BackButton = styled.button`
 export default function ProductDetails() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
+    
+    const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+
+    const toggleCategoryVisibility = () => {
+        setIsCategoryVisible((prev) => !prev);
+    }
 
     useEffect(() => {
         const getProductDetails = async () => {
@@ -192,9 +202,11 @@ export default function ProductDetails() {
     if (!product) {
         return <p>Carregando...</p>;
     }
+
     return (
         <>
-            <Header />
+            <Header onToggleCategory={toggleCategoryVisibility} isCategoryVisible={isCategoryVisible}/>
+            {isCategoryVisible &&  <Category />}
 
             <a href='/produtos'>
                 <BackButton>Voltar</BackButton>
@@ -206,7 +218,7 @@ export default function ProductDetails() {
 
                 <DivProduct>
                     <DivImages>
-                        <Carousel>
+                        <Carousel showThumbs={false}>
                             {product.imageUrls.map((imageUrl, index) => {
                                 if (imageUrl) {
                                     return <ImageDetail key={index} src={imageUrl} alt={product.title} />;
