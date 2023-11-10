@@ -15,15 +15,15 @@ function AppRouter() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path='./' element={<Home />} />
-          <Route path='./login' element={<Login />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
           <Route
-            path='./controlpanel'
+            path='/controlpanel'
             element={<PrivateRoute component={ControlPanel} />}
           />
           <Route path='*' element={<NotFound />} />
-          <Route path='./produtos' element={<AllProductsPage />} />
-          <Route path='./produtos/:id' element={<ProductDetails />} />
+          <Route path='/produtos' element={<AllProductsPage />} />
+          <Route path='/produtos/:id' element={<ProductDetails />} />
         </Routes>
       </AuthProvider>
     </Router>
